@@ -1,18 +1,22 @@
 import mongoose from "mongoose";
+import { State } from "./stateController";
 
 interface Country{
     _id: number;
     name: string;
     code: string;
-}
+};
+
 const countrySchema = new mongoose.Schema<Country>({
     _id: {type: Number},
     name: {type: String},
     code: {type: String},
 },
+
 {
     versionKey: false
-})
+});
+
 const Countrie = mongoose.model('Countrie', countrySchema);
 
 const getAllCountries = async (req: JSON, res: any) =>{
@@ -58,5 +62,15 @@ const getCountry = async (req:any, res:any) =>{
     }
 }
 
+const getStatesByCountry = async (req: any, res: any) =>{
+    const stateList = await State.find({countryID: req.params.id})
+    if(stateList){
+        res.status(200).json(stateList)
+    }
+    else{
+        res.status(400)
+        throw new Error("Can't Find States")
+    }
+}
 
-export {getAllCountries, newCountry, getCountry}
+export {getAllCountries, newCountry, getCountry, getStatesByCountry}

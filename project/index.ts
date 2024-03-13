@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use('/api/countries', require('./routes/countryRoutes'))
+app.use('/api/states', require('./routes/stateRoutes'))
 
 app.listen(port, ()=> console.log(`Server on port ${port}`))
 

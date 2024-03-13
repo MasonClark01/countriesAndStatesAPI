@@ -1,9 +1,10 @@
-const express = require('express')
+import express from 'express'
+import { getAllCountries, newCountry, getCountry, getStatesByCountry } from '../controllers/countryController'
 const router = express.Router()
-const { getAllCountries, newCountry, getCountry } = require('../controllers/countryController')
 
 router.route('/').get(getAllCountries).post(newCountry)
 router.get('/:id', getCountry)
+router.get('/:id/states', getStatesByCountry)
 
 module.exports = router;
 export {}
