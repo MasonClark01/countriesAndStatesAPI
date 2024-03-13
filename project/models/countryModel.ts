@@ -1,14 +1,15 @@
-import {Schema} from "mongoose";
-
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 
 interface Country{
     name: string;
     code: string;
 }
-const countrySchema = new Schema<Country>({
+const countrySchema = new mongoose.Schema<Country>({
     name: {type: String},
     code: {type: String} 
 })
 
-module.exports = mongoose.model('Countries', countrySchema)
+const CountryModel = mongoose.model('Countries', countrySchema)
+
+
+export default CountryModel

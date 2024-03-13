@@ -1,10 +1,10 @@
-const express = require('express')
+import { connectDB } from "./config/db";
+import express from 'express';
 const dotenv = require('dotenv').config()
-const port = process.env.PORT || 5000
-const connectDB = require('./config/db')
 
+const port = process.env.PORT || 5000;
 const app = express();
-connectDB()
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
