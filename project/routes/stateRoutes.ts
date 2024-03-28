@@ -3,7 +3,7 @@ import { getAllStates, newState, getState } from '../controllers/stateController
 const router = express.Router()
 
 router.route('/').get(getAllStates).post(newState)
-router.get('/:id', getState)
+router.get('/:code', getState)
 
 module.exports = router;
 export {}

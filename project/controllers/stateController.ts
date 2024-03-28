@@ -1,24 +1,5 @@
 import mongoose from "mongoose";
-
-interface State{
-    _id: number;
-    name: string;
-    code: string;
-    countryID: number;
-};
-
-const stateSchema = new mongoose.Schema<State>({
-    _id: {type: Number},
-    name: {type: String},
-    code: {type: String},
-    countryID: {type: Number}
-},
-
-{
-    versionKey: false
-});
-
-const State = mongoose.model('State', stateSchema)
+import { State } from "../models/stateModel";
 
 const getAllStates = async (req: JSON, res: any) =>{
     const data = await State.find()
@@ -27,31 +8,37 @@ const getAllStates = async (req: JSON, res: any) =>{
 
 const newState = async (req:any, res:any) =>{
     const lastEntry = await State.find().sort({ _id: -1 }).limit(1)
-    const lastID = lastEntry[0]._id+1
-    if(!req.body.name || !req.body.code || req.body.countryID){
-        res.status(400)
-        throw new Error('Inadequate state information')
-    }
+    const lastID = lastEntry[0]["_id"]+1
+    
     const name = req.body.name
     const code = req.body.code
-    const cID = req.body.countryID
-    const newState = await State.create({
+    const countryId = req.body.countryId
+
+    const checkState = await State.find().or([{"name": name}, {"code": code}]).exec();
+    
+    if(checkState.length !== 0){
+        res.status(409).json({"Message": "409 Error"})
+        return    
+    }
+
+    const NewState = await State.create({
         _id: lastID,
         name,
         code,
-        countryID: cID,
+        countryId,
     })
-    if(newState){
+    if(NewState){
         res.status(201).json({
-            _id: newState.id,
-            name: newState.name,
-            code: newState.code,
-            countryID: newState.countryID
+            _id: NewState["id"],
+            name: NewState["name"],
+            code: NewState["code"],
+            countryId: NewState["countryId"]
         })
     }
     else{
-    res.status(400)
-    throw new Error("Invalid Data")
+        res.status(400)
+        console.log(req)
+        throw new Error("Invalid Data")
     }
 }
 

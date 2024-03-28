@@ -3,8 +3,8 @@ import { getAllCountries, newCountry, getCountry, getStatesByCountry } from '../
 const router = express.Router()
 
 router.route('/').get(getAllCountries).post(newCountry)
-router.get('/:id', getCountry)
-router.get('/:id/states', getStatesByCountry)
+router.get('/:code', getCountry)
+router.get('/:code/states', getStatesByCountry)
 
 module.exports = router;
 export {}
